@@ -1,1 +1,1 @@
-# curvas-bezier
+Simples projeto para a disciplina de Processamento Gráfico
