@@ -11,6 +11,7 @@ function Board() {
   const [showCurves, setShowCurves] = useState(true);
   const [currentNumPoints, setCurrentNumPoints] = useState(30);
   const [numPoints, setNumPoints] = useState(30);
+  const [onMoving, setOnMoving] = useState(false);
   const [action, setAction] = useState('create');
 
   const newPoint = (event, update) => {
@@ -40,6 +41,28 @@ function Board() {
         let computedPoints = computePoints(numPoints, oldPoints);
         newArray[selectedCurve] = { points: oldPoints, computedPoints };
         setCurves([...newArray]);
+      }
+    }
+  }
+
+  const movePoint = (event) => {
+    const checkInterval = (coord) => {
+      return (event.clientX - 250 <= coord.x + 20 && event.clientX - 250 >= coord.x - 20) && (event.clientY <= coord.y + 20 && event.clientY >= coord.y - 20);
+    }
+
+    if(action === 'move') {
+      let oldPoints = curves[selectedCurve].points;
+      const newArray = curves;
+      const index = oldPoints.findIndex((coord) => {
+        return checkInterval(coord);
+      });
+      if (index !== -1) {
+        if (onMoving) {
+          oldPoints.splice(index, 1, { x: event.clientX - 250, y: event.clientY });
+          let computedPoints = computePoints(numPoints, oldPoints);
+          newArray[selectedCurve] = { points: oldPoints, computedPoints };
+          setCurves([...newArray]);
+        }
       }
     }
   }
@@ -168,6 +191,7 @@ function Board() {
 
         <Radio name="Remover ponto" id="radio-remove" type="remove" value={action} setValue={setAction} />
         <Radio name="Criar ponto" id="radio-create" type="create" value={action} setValue={setAction} />
+        <Radio name="Mover ponto" id="radio-move" type="move" value={action} setValue={setAction} />
         <button type="button" onClick={() => removeCurve()}>Remover curva</button>
 
         <p>Flags</p>
@@ -176,7 +200,7 @@ function Board() {
         <Checkbox name="Curvas" id="radio-show-curves" value={showCurves} setValue={setShowCurves} />
       </nav>
 
-      <canvas id="screen" onClick={(event) => action === 'create' ? newPoint(event) : removePoint(event)} />
+      <canvas onMouseDown={() => setOnMoving(true)} onMouseMove={(e) => movePoint(e)} onMouseUp={() => setOnMoving(false)} id="screen" onClick={(event) => action === 'create' ? newPoint(event) : removePoint(event)} />
     </div>
   );
 }
