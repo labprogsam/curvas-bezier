@@ -153,7 +153,7 @@ function Board() {
   return (
     <div className="canvas-nav">
       <nav className="nav">
-        <button onClick={() => addNewCurve()}>Adiciona nova curva</button>
+        <button onClick={() => addNewCurve()}>Adicionar nova curva</button>
         
         <label htmlFor="avaliacoes" >Avaliações</label>
         <input id="avaliacoes" type="number" value={currentNumPoints} onChange={(e) => setCurrentNumPoints(e.target.value)} />
