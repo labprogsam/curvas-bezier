@@ -13,11 +13,11 @@ function Board() {
   const [numPoints, setNumPoints] = useState(30);
   const [action, setAction] = useState('create');
 
-  const newPoint = (event) => {
+  const newPoint = (event, update) => {
     if (action === 'create') {
       let oldPoints = curves[selectedCurve].points;
       const newArray = curves;
-      oldPoints = [...oldPoints, { x: event.clientX - 250 , y: event.clientY }];
+      if (!update) oldPoints = [...oldPoints, { x: event.clientX - 250 , y: event.clientY }];
       let computedPoints = computePoints(numPoints, oldPoints);
       newArray[selectedCurve] = { points: oldPoints, computedPoints };
       setCurves([...newArray]);
@@ -26,7 +26,7 @@ function Board() {
 
   const removePoint = (event) => {
     const checkInterval = (coord) => {
-      return (event.clientX <= coord.x + 15 && event.clientX >= coord.x - 15) && (event.clientY <= coord.y + 15 && event.clientY >= coord.y - 15);
+      return (event.clientX - 250 <= coord.x + 20 && event.clientX - 250 >= coord.x - 20) && (event.clientY <= coord.y + 20 && event.clientY >= coord.y - 20);
     }
 
     if(action === 'remove') {
@@ -146,6 +146,10 @@ function Board() {
 
   }, [showLines, showCurves, curves, selectedCurve, showPoints]);
 
+  useEffect(() => {
+    newPoint(null, true)
+  },[numPoints]);
+
   return (
     <div className="canvas-nav">
       <nav className="nav">
@@ -164,7 +168,7 @@ function Board() {
 
         <Radio name="Remover ponto" id="radio-remove" type="remove" value={action} setValue={setAction} />
         <Radio name="Criar ponto" id="radio-create" type="create" value={action} setValue={setAction} />
-        <button type="button" onClick={() => removeCurve()}>Remover curva selecionada</button>
+        <button type="button" onClick={() => removeCurve()}>Remover curva</button>
 
         <p>Flags</p>
         <Checkbox name="Pontos de Controle" id="radio-show-points" value={showPoints} setValue={setShowPoints} />
