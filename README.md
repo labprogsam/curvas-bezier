@@ -33,7 +33,3 @@ npm start
 * **Johnny Herbert** - *Developer* - [Johnny-Herbert](https://github.com/Johnny-Herbert)
 * **Samuel Miranda** - *Developer* - [labprogsam](https://github.com/labprogsam)
 
-
-<p align="right">
-  Made with <b><i>markdown</i></b> and <b><i><3</i></b> by CITi.
-</p>
